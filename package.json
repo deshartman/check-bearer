@@ -1,0 +1,14 @@
+{
+  "name": "@deshartman/check-bearer",
+  "version": "1.0.2",
+  "description": "Utility: Checks the Twilio token (JWT) in the Auth Bearer header using the Twilio API secret key",
+  "main": "checkBearer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Des Hartman",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
