@@ -1,5 +1,4 @@
-import jwt from 'jsonwebtoken';
-
+const jwt = require('jsonwebtoken');
 /**
  * This is a utility class that checks the HTTP header for a "Bearer: JWT" and compares the JWT validity against
  * the Twilio API Key Secret. This is because Twilio JWTs are created using and API Key Secret, so a good way to secure
@@ -10,9 +9,9 @@ import jwt from 'jsonwebtoken';
  * @param {string} secret - The Twilio API Key Secret.
  * 
  */
-export default class CheckBearer {
+module.exports = class CheckBearer {
+
     constructor(headers = {}, secret = "") {
-        super();
         this.headers = headers;
         this.secret = secret;
     }
@@ -40,7 +39,7 @@ export default class CheckBearer {
             // If an error was thrown, the token is invalid.
             return { valid: false, error: `Invalid JWT token with error ${JSON.stringify(error, null, 4)}` };
         }
-    };
+    }
 }
 
 //"type": "module",
