@@ -1,6 +1,6 @@
 {
   "name": "@deshartman/check-bearer",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Utility: Checks the Twilio token (JWT) in the Auth Bearer header using the Twilio API secret key",
   "main": "checkBearer.js",
   "scripts": {

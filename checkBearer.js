@@ -9,37 +9,27 @@ const jwt = require('jsonwebtoken');
  * @param {string} secret - The Twilio API Key Secret.
  * 
  */
-module.exports = class CheckBearer {
+module.exports = function (headers = {}, secret = "") {
+    // Grab the auth token from the request header
+    const authHeader = headers.authorization;
 
-    constructor(headers = {}, secret = "") {
-        this.headers = headers;
-        this.secret = secret;
+    // Reject requests that don't have an Authorization header
+    if (!authHeader)
+        return { valid: false, error: 'no auth header present' };
+
+    // The auth type and token are separated by a space, split them
+    const [authType, authToken] = authHeader.split(' ');
+    // If the auth type is not Bearer, return false
+    if (authType.toLowerCase() !== 'bearer')
+        return { valid: false, error: 'no bearer token' };
+
+    try {
+        // Verify the token against the secret. If the token is invalid, jwt.verify will throw an error and we'll proceed to the catch block
+        jwt.verify(authToken, secret,);
+        // At this point, the request has been validated and you could do whatever you want with the request.
+        return { valid: true, error: null };
+    } catch (error) {
+        // If an error was thrown, the token is invalid.
+        return { valid: false, error: `Invalid JWT token with error ${JSON.stringify(error, null, 4)}` };
     }
-
-    verifyBearer() {
-        // Grab the auth token from the request header
-        const authHeader = this.headers.authorization;
-
-        // Reject requests that don't have an Authorization header
-        if (!authHeader)
-            return { valid: false, error: 'no auth header present' };
-
-        // The auth type and token are separated by a space, split them
-        const [authType, authToken] = authHeader.split(' ');
-        // If the auth type is not Bearer, return false
-        if (authType.toLowerCase() !== 'bearer')
-            return { valid: false, error: 'no bearer token' };
-
-        try {
-            // Verify the token against the secret. If the token is invalid, jwt.verify will throw an error and we'll proceed to the catch block
-            jwt.verify(authToken, this.secret,);
-            // At this point, the request has been validated and you could do whatever you want with the request.
-            return { valid: true, error: null };
-        } catch (error) {
-            // If an error was thrown, the token is invalid.
-            return { valid: false, error: `Invalid JWT token with error ${JSON.stringify(error, null, 4)}` };
-        }
-    }
-}
-
-//"type": "module",
+};
